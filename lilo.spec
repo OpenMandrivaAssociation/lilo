@@ -1,5 +1,5 @@
 %define version 22.6.1
-%define release %mkrel 10
+%define release %mkrel 11
 
 %define DEVMAPPER 1
 %{?_with_devmapper: %{expand: %%global DEVMAPPER 1}}
@@ -38,7 +38,7 @@ BuildRequires: device-mapper-devel
 Requires(post): /usr/bin/perl
 Provides: bootloader
 Conflicts: lilo-doc < 22.5.7.2-6mdk
-Exclusivearch: %{ix86}
+Exclusivearch: %{ix86} x86_64
 Buildroot: %{_tmppath}/lilo-root
 
 %package doc
