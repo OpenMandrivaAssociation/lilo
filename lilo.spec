@@ -35,7 +35,7 @@ BuildRequires: tetex-latex tetex-dvips tetex-dvipdfm dev86 dev86-devel nasm
 %if %{DEVMAPPER}
 BuildRequires: device-mapper-devel
 %endif
-Requires(post): /usr/bin/perl
+Requires(post): perl-base
 Provides: bootloader
 Conflicts: lilo-doc < 22.5.7.2-6mdk
 Exclusivearch: %{ix86} x86_64
