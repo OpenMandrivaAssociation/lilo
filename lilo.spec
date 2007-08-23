@@ -1,5 +1,5 @@
 %define version 22.6.1
-%define release %mkrel 11
+%define release %mkrel 12
 
 %define DEVMAPPER 1
 %{?_with_devmapper: %{expand: %%global DEVMAPPER 1}}
