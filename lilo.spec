@@ -142,7 +142,7 @@ if [ -f /etc/lilo.conf ]; then
           # need a special install=... 
   	  perl -pi -e 's|^install=.*\n||; $_ = "install=text\n$_" if $. == 1' /etc/lilo.conf ;;
         *)
-	  echo "ERROR: unknown lilo scheme, it is DROPPED (please tell pixel@mandrakesoft.com)"
+	  echo "ERROR: unknown lilo scheme, it is DROPPED (please tell pixel@mandriva.com)"
 	  sleep 1 ;;
       esac
 
