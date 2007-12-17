@@ -39,7 +39,6 @@ Requires(post): perl-base
 Provides: bootloader
 Conflicts: lilo-doc < 22.5.7.2-6mdk
 Exclusivearch: %{ix86} x86_64
-Buildroot: %{_tmppath}/lilo-root
 
 %package doc
 Summary: More doc for %{name}
