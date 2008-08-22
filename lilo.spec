@@ -1,5 +1,5 @@
 %define version 22.6.1
-%define release %mkrel 14
+%define release %mkrel 15
 
 %define DEVMAPPER 1
 %{?_with_devmapper: %{expand: %%global DEVMAPPER 1}}
@@ -29,6 +29,7 @@ Patch31: lilo-22.5.9-exit_code_1_when_aborting.patch
 Patch32: lilo-22.6.1-turn-non-valid-boot-signature-into-a-warning.patch
 Patch33: lilo-22.6.1-cdrecord-is-wodim--mkisofs-is-genisoimage.patch
 Patch34: lilo-22.6.1-handle-root-UUID.patch
+Patch35: lilo-22.6.1-large-memory-option-by-default.patch
 #Patch98: http://www.saout.de/misc/lilo-22.6-devmapper.patch.bz2
 Patch98: lilo-22.6-dm.patch
 Patch99: lilo-22.5.8-devmapper-hush.patch
@@ -71,6 +72,7 @@ cf %{name} package
 %patch32 -p1
 %patch33 -p1
 %patch34 -p1
+%patch35 -p1
 
 %if %{DEVMAPPER}
 %patch98 -p1 -b .dm
