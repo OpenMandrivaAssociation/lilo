@@ -1,9 +1,7 @@
-%define version 22.6.1
-%define release %mkrel 15
+%define _default_patch_fuzz 2
 
-%define DEVMAPPER 1
-%{?_with_devmapper: %{expand: %%global DEVMAPPER 1}}
-%{?_without_devmapper: %{expand: %%global DEVMAPPER 0}}
+%define version 22.8
+%define release %mkrel 1
 
 Summary: The boot loader for Linux and other operating systems
 Name: lilo
@@ -13,30 +11,24 @@ Epoch: 1
 License: MIT
 Group: System/Kernel and hardware
 URL: http://lilo.go.dyndns.org/
-Source: http://home.san.rr.com/johninsd/pub/linux/lilo/lilo-%{version}.src.tar.bz2
-#ftp://metalab.unc.edu/pub/Linux/system/boot/lilo/lilo-%{version}.tar.bz2
+Source: http://home.san.rr.com/johninsd/pub/linux/lilo/lilo-%{version}.tar.gz
 #Source: ftp://lrcftp.epfl.ch/pub/linux/local/lilo/
 Patch0: lilo-21.6-keytab-3mdk.patch
 Patch1: lilo-disks-without-partitions.patch
 Patch9: lilo-22.5.1-unsafe-and-default-table.patch
-Patch22: lilo-22.6-mandir.patch
+Patch22: lilo-22.8-mandir.patch
 Patch26: lilo-22.5.9-longer_image_names.patch
-Patch27: lilo-22.5.8-two_columns.patch
+# [Pixel] the following patch was introduced in 2004 by Juan Quintela, 
+# it may be needed by longer_image_names patch above, but it seems unneeded
+Patch27: lilo-two_columns.patch
 Patch28: lilo-22.5.9-never-relocate-when-has-partititions.patch
 Patch29: lilo-22.5.9-initialize-Volume-IDs-with-no-fanfare.patch
-Patch30: lilo-22.5.9-test-edd.patch
-Patch31: lilo-22.5.9-exit_code_1_when_aborting.patch
+Patch31: lilo-exit_code_1_when_aborting.patch
 Patch32: lilo-22.6.1-turn-non-valid-boot-signature-into-a-warning.patch
 Patch33: lilo-22.6.1-cdrecord-is-wodim--mkisofs-is-genisoimage.patch
-Patch34: lilo-22.6.1-handle-root-UUID.patch
 Patch35: lilo-22.6.1-large-memory-option-by-default.patch
-#Patch98: http://www.saout.de/misc/lilo-22.6-devmapper.patch.bz2
-Patch98: lilo-22.6-dm.patch
-Patch99: lilo-22.5.8-devmapper-hush.patch
 BuildRequires: tetex-latex tetex-dvips tetex-dvipdfm dev86 dev86-devel nasm
-%if %{DEVMAPPER}
 BuildRequires: device-mapper-devel
-%endif
 Requires(post): perl-base
 Provides: bootloader
 Conflicts: lilo-doc < 22.5.7.2-6mdk
@@ -62,22 +54,15 @@ cf %{name} package
 %patch0 -p1
 %patch1 -p1
 %patch9 -p1
-%patch22 -p1
+%patch22 -p1 -b .mandir
 %patch26 -p1 -b .images
 %patch27 -p1 -b .two
 %patch28 -p1
 %patch29 -p1
-%patch30 -p1
-%patch31 -p1
+%patch31 -p1 -b .exit_code
 %patch32 -p1
 %patch33 -p1
-%patch34 -p1
 %patch35 -p1
-
-%if %{DEVMAPPER}
-%patch98 -p1 -b .dm
-#patch99 -p1 -b .hushdm
-%endif
 
 bzip2 -9 README*
 
