@@ -1,7 +1,7 @@
 %define _default_patch_fuzz 2
 
 %define version 22.8
-%define release %mkrel 3
+%define release %mkrel 4
 
 Summary: The boot loader for Linux and other operating systems
 Name: lilo
