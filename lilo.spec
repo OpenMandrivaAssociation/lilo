@@ -1,7 +1,7 @@
 %define _default_patch_fuzz 2
 
 %define version 23.2
-%define release %mkrel 1
+%define release %mkrel 2
 
 Summary: The boot loader for Linux and other operating systems
 Name: lilo
@@ -14,6 +14,7 @@ URL: http://lilo.go.dyndns.org/
 Source: http://home.san.rr.com/johninsd/pub/linux/lilo/lilo-%{version}.tar.gz
 #Source: ftp://lrcftp.epfl.ch/pub/linux/local/lilo/
 Patch0: lilo-23.2.mdv.patch
+Patch1:	lilo-23.2.syslinux.patch
 BuildRequires: tetex-latex tetex-dvips tetex-dvipdfm dev86 dev86-devel nasm
 BuildRequires: device-mapper-devel sharutils
 Requires(post): perl-base
@@ -39,6 +40,9 @@ cf %{name} package
 %prep
 %setup -q
 %patch0 -p1
+
+# lilo-23.2.syslinux.patch
+%patch1 -p1 -b .syslinux
 
 bzip2 -9 README*
 
