@@ -1,0 +1,23 @@
+resolve conflict with package syslinux
+see #63292
+
+--- lilo-23.2/src/Makefile.syslinux	2011-04-09 21:05:59.000000000 +0400
++++ lilo-23.2/src/Makefile	2011-08-22 11:56:41.586383886 +0400
+@@ -246,7 +246,7 @@ install:
+ 	cp lilo $$DESTDIR$(SBIN_DIR)/lilo
+ 	strip $$DESTDIR$(SBIN_DIR)/lilo
+ 	cp ../mkrescue $$DESTDIR$(USRSBIN_DIR)/mkrescue
+-	cp ../keytab-lilo.pl $$DESTDIR$(USRSBIN_DIR)/keytab-lilo
++	cp ../keytab-lilo.pl $$DESTDIR$(USRSBIN_DIR)/keytab-lilo.pl
+ 
+ dep:
+ 	sed '/\#\#\# Dependencies/q' <Makefile >tmp_make
+@@ -276,7 +276,7 @@ distclean:
+ uninstall:
+ 	rm -f $$DESTDIR$(SBIN_DIR)/lilo
+ 	rm -f $$DESTDIR$(USRSBIN_DIR)/mkrescue
+-	rm -f $$DESTDIR$(USRSBIN_DIR)/keytab-lilo
++	rm -f $$DESTDIR$(USRSBIN_DIR)/keytab-lilo.pl
+ 	rm -f $$DESTDIR$(BOOT_DIR)/diag1.img
+ 	rm -f $$DESTDIR$(BOOT_DIR)/diag2.img
+ 
