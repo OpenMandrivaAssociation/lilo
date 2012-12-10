@@ -156,3 +156,64 @@ fi
 %doc doc/*.pdf TOOLS TODO NEWS CHANGELOG
 
 
+
+
+%changelog
+* Mon Aug 22 2011 Alexander Barakin <abarakin@mandriva.org> 1:23.2-2mdv2012.0
++ Revision: 696134
+- resolve filename conflict with syslinux. see #63292
+
+* Wed May 04 2011 Antoine Ginies <aginies@mandriva.com> 1:23.2-1
++ Revision: 665993
+- lilo 23.2 version
+
+* Fri Dec 03 2010 Oden Eriksson <oeriksson@mandriva.com> 1:22.8-4mdv2011.0
++ Revision: 606409
+- rebuild
+
+* Wed Mar 17 2010 Oden Eriksson <oeriksson@mandriva.com> 1:22.8-3mdv2010.1
++ Revision: 523188
+- rebuilt for 2010.1
+
+* Wed Sep 02 2009 Christophe Fergeau <cfergeau@mandriva.com> 1:22.8-2mdv2010.0
++ Revision: 425978
+- rebuild
+
+* Wed Jan 07 2009 Pixel <pixel@mandriva.com> 1:22.8-1mdv2009.1
++ Revision: 326625
+- 22.8
+- always build with device-mapper (support for it is now upstream)
+- rediff patch27 (two_columns), but is this really needed?
+- rediff patches: patch31 (exit_code)
+- adapt patch22 (mandir)
+- drop patch30: test-edd.b was not compiled by default anyway
+- drop patches applied upstream: patch34 (UUID), patch98 (dm)
+
+* Fri Aug 22 2008 Pixel <pixel@mandriva.com> 1:22.6.1-15mdv2009.0
++ Revision: 275134
+- use "large-memory" by default to workaround BIOS issues with big initrd (esp. since splashy)
+
+* Tue Jun 17 2008 Thierry Vignaud <tv@mandriva.org> 1:22.6.1-14mdv2009.0
++ Revision: 223107
+- rebuild
+
+* Tue Jan 22 2008 Pixel <pixel@mandriva.com> 1:22.6.1-13mdv2008.1
++ Revision: 156251
+- handle root="UUID=xxx"
+
+* Fri Dec 21 2007 Olivier Blin <blino@mandriva.org> 1:22.6.1-12mdv2008.1
++ Revision: 136572
+- restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+    - s/Mandrake/Mandriva/
+
+* Thu Aug 23 2007 Thierry Vignaud <tv@mandriva.org> 1:22.6.1-12mdv2008.0
++ Revision: 69356
+- kill file require on perl-base
+
+* Sun Jul 01 2007 Christiaan Welvaart <spturtle@mandriva.org> 1:22.6.1-11mdv2008.0
++ Revision: 46288
+- enable x86-64 native package
+
