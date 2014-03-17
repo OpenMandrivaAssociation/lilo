@@ -1,0 +1,19 @@
+--- lilo-22.5.1/src/boot.c.pix	2003-03-15 20:18:12.000000000 +0100
++++ lilo-22.5.1/src/boot.c	2003-04-02 12:33:04.000000000 +0200
+@@ -283,6 +283,7 @@
+     BOOT_SECTOR buff[SETUPSECS-1];
+     struct stat st;
+     char *pos;
++    char *vanilla_part = part;
+     int i, code;
+     int letter = 0;
+ 
+@@ -338,7 +339,7 @@
+ 
+     if (cfg_get_flag(cf_other,"unsafe")) {
+ 	(void) geo_open_boot(&geo,boot);
+-	if (part) die("TABLE and UNSAFE are mutually incompatible.");
++	if (vanilla_part) die("TABLE and UNSAFE are mutually incompatible.");
+     }
+     else {
+ 	b_fd = geo_open(&geo,boot,O_RDONLY);

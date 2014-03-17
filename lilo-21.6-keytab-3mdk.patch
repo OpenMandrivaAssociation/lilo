@@ -1,0 +1,28 @@
+--- lilo-23.2/keytab-lilo.pl.orig	2010-06-19 21:20:59.000000000 +0000
++++ lilo-23.2/keytab-lilo.pl	2011-04-16 23:04:01.000000000 +0000
+@@ -1,6 +1,5 @@
+ #!/usr/bin/perl
+ $DEFAULT_MAP = "us";
+-$DEFAULT_EXT = ".kmap";
+ 
+ sub usage
+ {
+@@ -35,7 +34,6 @@
+     local ($empty,$current);
+ 
+     $map = $DEFAULT_MAP unless defined $map;
+-    $map .= $DEFAULT_EXT unless $map =~ m|/[^/]+\.[^/]+$|;
+     if (!open(FILE,"loadkeys -m $map |")) {
+ 	print STDERR "loadkeys -m $map: $!\n";
+ 	exit 1;
+@@ -82,7 +80,9 @@
+ 	$code = $set;
+ 	for (split(",",$map{"kbd:".$map})) {
+ 	    die "bad map entry $_ (kbd, map $map)" unless /^0x\S\S(\S\S)$/;
+-	    $table[$tmp[$code]] = hex $1 unless $table[$tmp[$code]];
++	    $table[$tmp[$code]] ||= hex $1 if $tmp[$code] > ord(' ') && ($code - $set) <= 59;
++	    # ' ' is the first real character
++	    # 59 is the end of the standard keyboard (test with showkey)
+ 	    $code++;
+ 	}
+ 	$set += 256;

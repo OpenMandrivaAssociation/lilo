@@ -1,0 +1,7 @@
+# Lilo boot menu background configuration  (Lilo 23)
+
+bitmap = rosa.bmp
+
+bmp-table  = 6,12;2,10,32,10
+bmp-colors = 1,252,,252,0,
+bmp-timer  = 68,30;0,13,

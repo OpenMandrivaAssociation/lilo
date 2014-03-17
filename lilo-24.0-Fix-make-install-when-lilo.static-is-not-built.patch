@@ -1,0 +1,25 @@
+From 1de4c7d78258a6d8547cb2631e9f1432bfc3be86 Mon Sep 17 00:00:00 2001
+From: Pascal Terjan <pterjan@gmail.com>
+Date: Fri, 18 Oct 2013 21:19:34 +0000
+Subject: [PATCH] Fix make install when lilo.static is not built
+
+---
+ src/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Makefile b/src/Makefile
+index feb144e..d8b3a6a 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -245,7 +245,7 @@ install:
+ 
+ 	strip lilo
+ 	cp lilo $$DESTDIR$(SBIN_DIR)/lilo
+-	[ -x lilo.static ] && strip lilo.static
++	if [ -x lilo.static ]; then strip lilo.static; fi
+ 	cp ../mkrescue $$DESTDIR$(USRSBIN_DIR)/mkrescue
+ 	cp ../keytab-lilo.pl $$DESTDIR$(USRSBIN_DIR)/keytab-lilo
+ 
+-- 
+1.8.4
+

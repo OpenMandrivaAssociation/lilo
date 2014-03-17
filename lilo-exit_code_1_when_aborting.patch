@@ -1,0 +1,48 @@
+diff -p -up lilo-22.8/src/bsect.c.exit_code lilo-22.8/src/bsect.c
+--- lilo-22.8/src/bsect.c.exit_code	2009-01-07 12:32:53.000000000 +0100
++++ lilo-22.8/src/bsect.c	2009-01-07 12:33:21.000000000 +0100
+@@ -500,7 +500,7 @@ static void open_bsect(char *boot_dev)
+         nowarn = 0;
+ 
+ 	warn("'-F' override used. Filesystem on  %s  may be destroyed.", boot_devnam);
+-	if (!yesno("\nProceed? ",0)) exit(0);
++	if (!yesno("\nProceed? ",0)) exit(1);
+ 
+         nowarn = nowarn2;
+ 	ireloc=PTW_OKAY;
+diff -p -up lilo-22.8/src/device.c.exit_code lilo-22.8/src/device.c
+--- lilo-22.8/src/device.c.exit_code	2009-01-07 12:32:53.000000000 +0100
++++ lilo-22.8/src/device.c	2009-01-07 12:32:53.000000000 +0100
+@@ -841,7 +841,7 @@ static int winnt_check(struct VolumeMgmt
+ 
+     if (ret && fatal) {
+ 	fprintf(stderr, "Aborting ...\n");
+-	exit(0);
++	exit(1);
+     }
+     
+     return ret;
+diff -p -up lilo-22.8/src/edit.c.exit_code lilo-22.8/src/edit.c
+--- lilo-22.8/src/edit.c.exit_code	2004-08-21 20:11:07.000000000 +0200
++++ lilo-22.8/src/edit.c	2009-01-07 12:32:53.000000000 +0100
+@@ -688,7 +688,7 @@ static void transfer_params(char *config
+     }
+ 
+     printf("Transfer parameters from '%s' to '%s'", config_file, bitmap_file);
+-    if (yesno("?", 0)==0) exit(0);
++    if (yesno("?", 0)==0) exit(1);
+ 
+     if (verbose > 0) printf("%s bitmap file:  %s\n", opt, bitmap_file);
+     
+diff -p -up lilo-22.8/src/partition.c.exit_code lilo-22.8/src/partition.c
+--- lilo-22.8/src/partition.c.exit_code	2005-10-07 00:36:00.000000000 +0200
++++ lilo-22.8/src/partition.c	2009-01-07 12:32:53.000000000 +0100
+@@ -234,7 +234,7 @@ void part_verify(int dev_nr,int type)
+ 	if (!dos && !cfg_get_flag(cf_options,"ignore-table"))
+ 	    die("You may proceed by using either '-P ignore' or 'ignore-table'");
+ #else
+-	if (!yesno("\nProceed? ", 0)) exit(0);
++	if (!yesno("\nProceed? ", 0)) exit(1);
+ #endif
+     }
+     cyl = part_table[part].cyl+((part_table[part].sector >> 6) << 8);

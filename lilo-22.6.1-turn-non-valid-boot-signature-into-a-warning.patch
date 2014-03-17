@@ -1,0 +1,11 @@
+--- lilo-23.2/src/boot.c.pix	2005-01-15 19:59:55.000000000 +0100
++++ lilo-23.2/src/boot.c	2005-01-15 20:00:37.396498624 +0100
+@@ -402,7 +402,7 @@
+ 	    if (size < 0) die("read %s: %s",boot,strerror(errno));
+ 	    else die("Can't get magic number of %s",boot); }
+ 	if (magic != BOOT_SIGNATURE)
+-	    die("First sector of %s doesn't have a valid boot signature",boot);
++	    fprintf(errstd,"Warning: First sector of %s doesn't have a valid boot signature\n",boot);
+     }
+ 
+ /* process the 'master-boot' or 'boot-as' options */

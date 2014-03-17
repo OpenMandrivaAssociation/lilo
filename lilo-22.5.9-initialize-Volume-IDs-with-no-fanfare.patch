@@ -1,0 +1,11 @@
+--- lilo-22.5.9/src/device.c.pix	2004-03-20 23:26:06.000000000 +0100
++++ lilo-22.5.9/src/device.c	2004-08-17 17:54:47.431230076 +0200
+@@ -958,7 +958,7 @@
+ 		DEVICE Dev2;
+ 		serial = volid_get_set(dev, 0, ID_GET);
+ 
+-#if 0
++#if 1
+ /* take care of uninitialized Volume IDs with no fanfare */
+ 		if (serial==0) {
+ 		    serial = volid_get_set(dev, new_serial(dev), ID_SET);

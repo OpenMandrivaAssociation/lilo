@@ -1,76 +1,56 @@
+%define _enable_debug_packages %{nil}
+%define debug_package %{nil}
+
 %define _default_patch_fuzz 2
 
-%define version 23.2
-%define release %mkrel 2
-
-Summary: The boot loader for Linux and other operating systems
-Name: lilo
-Version: %{version}
-Release: %{release}
-Epoch: 1
-License: MIT
-Group: System/Kernel and hardware
-URL: http://lilo.go.dyndns.org/
-Source: http://home.san.rr.com/johninsd/pub/linux/lilo/lilo-%{version}.tar.gz
-#Source: ftp://lrcftp.epfl.ch/pub/linux/local/lilo/
-Patch0: lilo-23.2.mdv.patch
-Patch1:	lilo-23.2.syslinux.patch
-BuildRequires: tetex-latex tetex-dvips tetex-dvipdfm dev86 dev86-devel nasm
-BuildRequires: device-mapper-devel sharutils
-Requires(post): perl-base
-Provides: bootloader
-Conflicts: lilo-doc < 22.5.7.2-6mdk
-Exclusivearch: %{ix86} x86_64
-Buildroot: %{_tmppath}/lilo-root
-
-%package doc
-Summary: More doc for %{name}
-Group: System/Kernel and hardware
-Conflicts: lilo < 22.5.7.2-6mdk
+Summary:	The boot loader for Linux and other operating systems
+Name:		lilo
+Version:	24.0
+Release:	1
+Epoch:		1
+License:	MIT
+Group:		System/Kernel and hardware
+Url:		http://lilo.alioth.debian.org/
+Source0:	http://lilo.alioth.debian.org/ftp/sources/%{name}-%{version}.tar.gz
+Source1:	rosa_256c.uu
+Source2:	rosa_256c.dat
+Patch0:		lilo-21.6-keytab-3mdk.patch
+Patch1:		lilo-disks-without-partitions.patch
+Patch2:		lilo-23.2.syslinux.patch
+Patch9:		lilo-22.5.1-unsafe-and-default-table.patch
+Patch26:	lilo-22.5.9-longer_image_names.patch
+# [Pixel] the following patch was introduced in 2004 by Juan Quintela,
+# it may be needed by longer_image_names patch above, but it seems unneeded
+Patch27:	lilo-two_columns.patch
+Patch28:	lilo-22.5.9-never-relocate-when-has-partititions.patch
+Patch29:	lilo-22.5.9-initialize-Volume-IDs-with-no-fanfare.patch
+Patch31:	lilo-exit_code_1_when_aborting.patch
+Patch32:	lilo-22.6.1-turn-non-valid-boot-signature-into-a-warning.patch
+Patch35:	lilo-22.6.1-large-memory-option-by-default.patch
+Patch36:	lilo-23.2-no-debian.patch
+Patch37:	lilo-24.0-Fix-make-install-when-lilo.static-is-not-built.patch
+BuildRequires:	texlive
+BuildRequires:	dev86
+BuildRequires:	dev86-devel
+BuildRequires:	nasm
+BuildRequires:	device-mapper-devel
+BuildRequires:	sharutils
+Requires(post):	perl-base
+Provides:	bootloader
+ExclusiveArch:	%{ix86} x86_64
 
 %description
 LILO (LInux LOader) is a basic system program which boots your Linux
-system.  LILO loads the Linux kernel from a floppy or a hard drive, boots
-the kernel and passes control of the system to the kernel.  LILO can also
+system. LILO loads the Linux kernel from a floppy or a hard drive, boots
+the kernel and passes control of the system to the kernel. LILO can also
 boot other operating systems.
 
-%description doc
-cf %{name} package
-
-%prep
-%setup -q
-%patch0 -p1
-
-# lilo-23.2.syslinux.patch
-%patch1 -p1 -b .syslinux
-
-bzip2 -9 README*
-
-# disable diagnostic build (which would need beeing root)
-perl -pi -e 's/^(diagnostic:).*/diagnostic:/' Makefile
-
-%build
-perl -p -i -e "s/-Wall -g/$RPM_OPT_FLAGS/" Makefile
-make
-(cd doc
-make CFLAGS="$RPM_OPT_FLAGS -DDEBUG"
-dvipdfm -o User_Guide.pdf user.dvi
-dvipdfm -o Technical_Guide.pdf tech.dvi
-rm -f *.aux *.log *.toc)
-# build bmp logo
-cd images
-for file in *.uu; do uudecode $file; done
-
-%install
-rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_bindir}
-%makeinstall ROOT=$RPM_BUILD_ROOT DESTDIR=$RPM_BUILD_ROOT
-
-mv $RPM_BUILD_ROOT/usr/sbin/* $RPM_BUILD_ROOT%{_bindir}
-rm -vf $RPM_BUILD_ROOT/boot/debian*.bmp
-
-%clean
-rm -rf $RPM_BUILD_ROOT
+%files
+%doc README* COPYING
+/sbin/*
+%{_bindir}/*
+%{_mandir}/*/*
+/boot/rosa.bmp
 
 %post
 if [ -f /etc/lilo.conf ]; then
@@ -89,10 +69,10 @@ if [ -f /etc/lilo.conf ]; then
 
       # transforming the /boot/message symlink in non-symlink
       if [ -e /boot/lilo-text/message ]; then
-	  mv -f /boot/lilo-text/message /boot/message-text
-      fi 
+        mv -f /boot/lilo-text/message /boot/message-text
+      fi
       if [ -e /boot/lilo-menu/message ]; then
-	  mv -f /boot/lilo-menu/message /boot/message-text
+        mv -f /boot/lilo-menu/message /boot/message-text
       fi
 
       if [ -e /boot/message-text ]; then
@@ -107,28 +87,28 @@ if [ -f /etc/lilo.conf ]; then
         lilo-bmp) ;; # automatically chosen by lilo based on "bitmap=..."
         lilo-graphic) ;; # obsolete
         lilo-text)
-          # need a special install=... 
-  	  perl -pi -e 's|^install=.*\n||; $_ = "install=text\n$_" if $. == 1' /etc/lilo.conf ;;
+          # need a special install=...
+          perl -pi -e 's|^install=.*\n||; $_ = "install=text\n$_" if $. == 1' /etc/lilo.conf ;;
         *)
-	  echo "ERROR: unknown lilo scheme, it is DROPPED (please tell pixel@mandriva.com)"
-	  sleep 1 ;;
+          echo "ERROR: unknown lilo scheme, it is DROPPED (please file a bug at http://bugs.rosalinux.ru/)"
+          sleep 1 ;;
       esac
 
       rm -f /boot/lilo
   elif [ -e /boot/message-graphic ]; then
       if perl -e 'exit(-s "/boot/message" > 65_000 ? 0 : 1)'; then
-      	 link=`perl -e 'print readlink("/boot/message")'`
-	 rm /boot/message
-	 if [ "$link" = "message-graphic" -a -e /boot/message-text ]; then
-	   ln -s message-text /boot/message
-	   if perl -e 'exit(-s "/boot/message" > 65_000 ? 0 : 1)'; then
- 	     # weird message-text file... well someone had this on cooker, better be safe
-	     echo > /boot/message
+         link=`perl -e 'print readlink("/boot/message")'`
+         rm /boot/message
+         if [ "$link" = "message-graphic" -a -e /boot/message-text ]; then
+           ln -s message-text /boot/message
+           if perl -e 'exit(-s "/boot/message" > 65_000 ? 0 : 1)'; then
+             # weird message-text file... well someone had this on cooker, better be safe
+             echo > /boot/message
            fi
          else
-	   echo > /boot/message
+           echo > /boot/message
          fi
-      fi      	 
+      fi
   fi
 
   chmod 600 /etc/lilo.conf
@@ -140,80 +120,57 @@ if [ -f /etc/lilo.conf ]; then
   fi
 fi
 
-%files
-%defattr(-,root,root)
-%doc README* COPYING
-/sbin/*
-%{_bindir}/*
-%{_mandir}/*/*
-%{_sysconfdir}/initramfs/post-update.d/runlilo
-%{_sysconfdir}/kernel/*
-%{_sysconfdir}/lilo.conf_example
-/boot/*.bmp
+#----------------------------------------------------------------------------
+
+%package doc
+Summary:	More doc for %{name}
+Group:		System/Kernel and hardware
+
+%description doc
+cf %{name} package.
 
 %files doc
-%defattr(-,root,root)
-%doc doc/*.pdf TOOLS TODO NEWS CHANGELOG
+%doc doc/*.pdf QuickInst
 
+#----------------------------------------------------------------------------
 
+%prep
+%setup -q
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch9 -p1
+%patch26 -p1 -b .images
+%patch27 -p1 -b .two
+%patch28 -p1
+%patch29 -p1
+%patch31 -p1 -b .exit_code
+%patch32 -p1
+%patch35 -p1
+%patch36 -p1
+%patch37 -p1
 
+bzip2 -9 README*
 
-%changelog
-* Mon Aug 22 2011 Alexander Barakin <abarakin@mandriva.org> 1:23.2-2mdv2012.0
-+ Revision: 696134
-- resolve filename conflict with syslinux. see #63292
+cp -a %{SOURCE1} %{SOURCE2} images/
 
-* Wed May 04 2011 Antoine Ginies <aginies@mandriva.com> 1:23.2-1
-+ Revision: 665993
-- lilo 23.2 version
+# disable diagnostic build (which would need beeing root)
+perl -pi -e 's/^(diagnostic:).*/diagnostic:/' Makefile
 
-* Fri Dec 03 2010 Oden Eriksson <oeriksson@mandriva.com> 1:22.8-4mdv2011.0
-+ Revision: 606409
-- rebuild
+%build
+perl -p -i -e "s/-Wall -g/%{optflags}/" Makefile
+make all
+(cd doc
+make -f Makefile.old CFLAGS="%{optflags} -DDEBUG"
+dvipdfm -o User_Guide.pdf user.dvi
+dvipdfm -o Technical_Guide.pdf tech.dvi
+rm -f *.aux *.log *.toc)
 
-* Wed Mar 17 2010 Oden Eriksson <oeriksson@mandriva.com> 1:22.8-3mdv2010.1
-+ Revision: 523188
-- rebuilt for 2010.1
+%install
+%makeinstall_std
 
-* Wed Sep 02 2009 Christophe Fergeau <cfergeau@mandriva.com> 1:22.8-2mdv2010.0
-+ Revision: 425978
-- rebuild
+install -d %{buildroot}%{_bindir}
+mv %{buildroot}%{_sbindir}/* %{buildroot}%{_bindir}
 
-* Wed Jan 07 2009 Pixel <pixel@mandriva.com> 1:22.8-1mdv2009.1
-+ Revision: 326625
-- 22.8
-- always build with device-mapper (support for it is now upstream)
-- rediff patch27 (two_columns), but is this really needed?
-- rediff patches: patch31 (exit_code)
-- adapt patch22 (mandir)
-- drop patch30: test-edd.b was not compiled by default anyway
-- drop patches applied upstream: patch34 (UUID), patch98 (dm)
-
-* Fri Aug 22 2008 Pixel <pixel@mandriva.com> 1:22.6.1-15mdv2009.0
-+ Revision: 275134
-- use "large-memory" by default to workaround BIOS issues with big initrd (esp. since splashy)
-
-* Tue Jun 17 2008 Thierry Vignaud <tv@mandriva.org> 1:22.6.1-14mdv2009.0
-+ Revision: 223107
-- rebuild
-
-* Tue Jan 22 2008 Pixel <pixel@mandriva.com> 1:22.6.1-13mdv2008.1
-+ Revision: 156251
-- handle root="UUID=xxx"
-
-* Fri Dec 21 2007 Olivier Blin <blino@mandriva.org> 1:22.6.1-12mdv2008.1
-+ Revision: 136572
-- restore BuildRoot
-
-  + Thierry Vignaud <tv@mandriva.org>
-    - kill re-definition of %%buildroot on Pixel's request
-    - s/Mandrake/Mandriva/
-
-* Thu Aug 23 2007 Thierry Vignaud <tv@mandriva.org> 1:22.6.1-12mdv2008.0
-+ Revision: 69356
-- kill file require on perl-base
-
-* Sun Jul 01 2007 Christiaan Welvaart <spturtle@mandriva.org> 1:22.6.1-11mdv2008.0
-+ Revision: 46288
-- enable x86-64 native package
+rm -rf %{buildroot}%{_sysconfdir}/initramfs %{buildroot}%{_sysconfdir}/kernel %{buildroot}%{_sysconfdir}/lilo.conf_example
 

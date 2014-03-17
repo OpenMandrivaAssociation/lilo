@@ -1,0 +1,11 @@
+--- lilo-22.5.9/src/lilo.h.pix	2004-07-05 14:11:30.233880333 +0200
++++ lilo-22.5.9/src/lilo.h	2004-07-05 14:11:42.650915316 +0200
+@@ -120,7 +120,7 @@
+ #define MAJOR_EVMS	117 /* Enterprise Volume Management System */
+ 
+ #define MAX_TOKEN	1023 /* max device Token length */
+-#define MAX_IMAGE_NAME	15 /* maximum name length (w/o terminating NUL) */
++#define MAX_IMAGE_NAME	31 /* maximum name length (w/o terminating NUL) */
+ #define MAX_DESCR_SECTORS  12  /* upper limit on MAX_DESCR_SECS */
+ 
+ #ifdef LCF_PASS160

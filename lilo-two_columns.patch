@@ -1,0 +1,47 @@
+diff -p -up lilo-22.8/crt.S.two lilo-22.8/crt.S
+--- lilo-22.8/src/crt.S.two	2005-11-23 22:37:45.000000000 +0100
++++ lilo-22.8/src/crt.S	2009-01-07 12:17:02.000000000 +0100
+@@ -11,7 +11,6 @@ source directory.
+ 
+ XPITCH  =	MAX_IMAGE_NAME+6
+ MINROW	=	4
+-MAX2COL	=	14
+ MAXTITLE  =	3
+ MAXCOMMENT  =	3
+ 
+@@ -77,12 +76,8 @@ findl3:	mov	[nimage],si
+ 
+ 	mov	ax,si
+ 	mov	bl,#2		;set for 2 columns
+-	cmp	al,#MAX2COL
+-	jle	col1
+-	inc	bl
+-col1:	mov	[ncol],bl
+-	add	al,bl
+-	dec	al
++	mov	[ncol],bl
++	inc	al
+ 	div	bl
+ 	cmp	al,#MINROW
+ 	jg	row1
+diff -p -up lilo-22.8/second.S.two lilo-22.8/second.S
+--- lilo-22.8/src/second.S.two	2009-01-07 12:17:02.000000000 +0100
++++ lilo-22.8/src/second.S	2009-01-07 12:24:02.000000000 +0100
+@@ -622,7 +622,7 @@ lloop:	testb	(si),#0xff	; done ?
+ 	call	say
+ 	add	si,#MAX_IMAGE_NAME+4
+ 	inc	dl		; count the image
+-	test	dl,#3		; inside line -> go on
++	test	dl,#1		; inside line -> go on
+ 	jnz	fill
+ 	call	crlf
+ 	jmp	imgdne		; next image
+@@ -635,7 +635,7 @@ fill:	push	bx		; fill with spaces
+ 	jbe	fill
+ imgdne:	add	si,#id_size-MAX_IMAGE_NAME-4
+ 	loop	lloop		; next image
+-ldone:	test	dl,#3		; already at BOL ?
++ldone:	test	dl,#1		; already at BOL ?
+ 	jz	atbol		; yes -> no CRLF
+ 	call	crlf
+ atbol:	

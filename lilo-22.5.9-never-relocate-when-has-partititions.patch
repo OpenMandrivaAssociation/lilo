@@ -1,0 +1,10 @@
+--- lilo-22.5.9/src/bsect.c.pix	2004-08-06 16:31:10.000000000 +0200
++++ lilo-22.5.9/src/bsect.c	2004-08-06 16:31:40.414442879 +0200
+@@ -1318,6 +1318,7 @@
+ #if 1
+     if (ireloc &&
+     	  bsect.par_1.cli == 0xFA
++          && !has_partitions(boot_dev_nr)
+     	 						 ) {
+ /* perform the relocation of the boot sector */
+ 	int len = bsect.par_1.code_length;
