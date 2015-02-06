@@ -6,7 +6,7 @@
 Summary:	The boot loader for Linux and other operating systems
 Name:		lilo
 Version:	24.0
-Release:	1
+Release:	2
 Epoch:		1
 License:	MIT
 Group:		System/Kernel and hardware
