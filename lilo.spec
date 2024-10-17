@@ -10,7 +10,7 @@ Release:	2
 Epoch:		1
 License:	MIT
 Group:		System/Kernel and hardware
-Url:		http://lilo.alioth.debian.org/
+Url:		https://lilo.alioth.debian.org/
 Source0:	http://lilo.alioth.debian.org/ftp/sources/%{name}-%{version}.tar.gz
 Source1:	rosa_256c.uu
 Source2:	rosa_256c.dat
